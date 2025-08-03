@@ -12,5 +12,22 @@ This repository contains a collection of front-end mini-projects built using HTM
 | Coming Soon Page  | [Live Preview](https://coming-soon-ayesha.netlify.app/)     | [`coming-soon`](coming-soon.html)      |
 | 404 notfound page | [Live Preview](https://404-pag-ayesha.netlify.app/)         | [`404 page`](404-page.html)            |
 
-**Notice:** These projects are shared for educational and portfolio purposes only.  
-> Please do not reuse, copy, or modify this code without explicit permission.
+
+## Code Usage Notice
+
+These projects are part of my personal front-end portfolio and are shared for **educational and inspiration purposes only**.
+
+- You may **not** copy, reuse, or modify this code for your own work without permission.
+- You may **view the code and live demos** to explore styling ideas and techniques.
+
+Please contact me if you'd like to collaborate or request access to use any code.
+
+
+## Author
+
+**Ayesha Fareed**  
+Front-End Developer | WordPress & Web Design Expert  
+[LinkedIn](https://www.linkedin.com/in/ayeshaa-fareed/)  
+[Portfolio Website](https://your-portfolio-link.com)
+
+
