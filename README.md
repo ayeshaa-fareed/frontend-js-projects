@@ -10,7 +10,7 @@ This repository contains a collection of front-end mini-projects built using HTM
 | To-Do List        | [Live Preview](https://to-do-list-ayesha.netlify.app/)      | [`to-do-list`](To-Do-list.html)        |
 | Form Validation   | [Live Preview](https://form-validation-ayesha.netlify.app/) | [`form-validation`](form.html)         |  
 | Coming Soon Page  | [Live Preview](https://coming-soon-ayesha.netlify.app/)     | [`coming-soon`](coming-soon.html)      |
-| 404 notfound page | [Live Preview](https://404-pag-ayesha.netlify.app/)         | [`coming-soon`](404-page.html)
+| 404 notfound page | [Live Preview](https://404-pag-ayesha.netlify.app/)         | [`404 page`](404-page.html)            |
 
 **Notice:** These projects are shared for educational and portfolio purposes only.  
 > Please do not reuse, copy, or modify this code without explicit permission.
