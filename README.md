@@ -5,8 +5,8 @@ This repository contains a collection of front-end mini-projects built using HTM
 ## Project List
 
 | Project Name      | Live Demo                                                       
-|------------------ |------------------------------------------------------------
-| Calculator        | [Live Preview](https://calculator-by-ayesha.netlify.app/) 
+|------------------ |-------------------------------------------------------------|
+| Calculator        | [Live Preview](https://calculator-by-ayesha.netlify.app/)   | [`calculator`](./calculator)
 | To-Do List        | [Live Preview](https://to-do-list-ayesha.netlify.app/)             
 | Form Validation   | [Live Preview](https://form-validation-ayesha.netlify.app/)     
 | Coming Soon Page  | [Live Preview](https://coming-soon-ayesha.netlify.app/)   
