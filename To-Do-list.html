@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" class="dark:bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced To-Do List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --danger: #ef4444;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .task-item {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        
+        .checkbox:checked + .task-text {
+            text-decoration: line-through;
+            color: rgb(156, 163, 175);
+        }
+        
+        .checkbox {
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: white;
+            margin: 0;
+            width: 1.5em;
+            height: 1.5em;
+            border: 2px solid #d1d5db;
+            border-radius: 0.25em;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .checkbox:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .checkbox::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            transform-origin: bottom left;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        
+        .checkbox:checked::before {
+            transform: scale(1);
+        }
+        
+        .task-item {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+        <!-- Header -->
+        <header class="mb-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-1">My Tasks</h1>
+                <p class="text-gray-500 dark:text-gray-400">Stay organized and boost productivity</p>
+            </div>
+            <button id="theme-toggle" type="button" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                <svg id="sun" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg id="moon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-400 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+        </header>
+        
+        <!-- Add Task Form -->
+        <form id="add-form" class="mb-6 flex gap-2">
+            <input 
+                type="text" 
+                id="task-input" 
+                placeholder="What needs to be done?" 
+                class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                required
+                autocomplete="off"
+            >
+            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+                Add
+            </button>
+        </form>
+        
+        <!-- Task List -->
+        <div id="task-list" class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+            <!-- Filter Controls -->
+            <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+                <button id="filter-all" class="font-medium text-indigo-600 dark:text-indigo-400 filter-btn">All</button>
+                <button id="filter-active" class="filter-btn hover:text-gray-700 dark:hover:text-gray-300">Active</button>
+                <button id="filter-completed" class="filter-btn hover:text-gray-700 dark:hover:text-gray-300">Completed</button>
+                <button id="clear-completed" class="hover:text-gray-700 dark:hover:text-gray-300">Clear completed</button>
+            </div>
+            
+            <!-- Tasks Container -->
+            <div id="tasks-container" class="divide-y divide-gray-200 dark:divide-gray-700">
+                <!-- Tasks will be added here dynamically -->
+            </div>
+            
+            <!-- Status -->
+            <div class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                <span id="items-count">0</span> items left
+            </div>
+        </div>
+        
+        <!-- Drag & Drop Hint -->
+        <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+            <p>Tip: Drag tasks to reorder them</p>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const addForm = document.getElementById('add-form');
+        const taskInput = document.getElementById('task-input');
+        const tasksContainer = document.getElementById('tasks-container');
+        const itemsCount = document.getElementById('items-count');
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun');
+        const moonIcon = document.getElementById('moon');
+        const filterAll = document.getElementById('filter-all');
+        const filterActive = document.getElementById('filter-active');
+        const filterCompleted = document.getElementById('filter-completed');
+        const clearCompleted = document.getElementById('clear-completed');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        // State
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        let currentFilter = 'all';
+
+        // Theme
+        const storedTheme = localStorage.getItem('theme') || 
+                           (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', storedTheme === 'dark');
+        sunIcon.classList.toggle('hidden', storedTheme === 'dark');
+        moonIcon.classList.toggle('hidden', storedTheme !== 'dark');
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            sunIcon.classList.toggle('hidden', isDark);
+            moonIcon.classList.toggle('hidden', !isDark);
+        });
+
+        // Initialize
+        function init() {
+            renderTasks();
+            updateCounter();
+        }
+
+        // Add Task
+        addForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = taskInput.value.trim();
+            if (title) {
+                const newTask = {
+                    id: Date.now(),
+                    title,
+                    completed: false,
+                    createdAt: new Date()
+                };
+                tasks.unshift(newTask);
+                saveAndRender();
+                taskInput.value = '';
+                taskInput.focus();
+            }
+        });
+
+        // Toggle Task Status
+        function toggleTask(id) {
+            const task = tasks.find(task => task.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                saveAndRender();
+            }
+        }
+
+        // Delete Task
+        function deleteTask(id) {
+            tasks = tasks.filter(task => task.id !== id);
+            saveAndRender();
+        }
+
+        // Clear Completed Tasks
+        clearCompleted.addEventListener('click', () => {
+            tasks = tasks.filter(task => !task.completed);
+            saveAndRender();
+        });
+
+        // Update Counter
+        function updateCounter() {
+            const activeTasks = tasks.filter(task => !task.completed).length;
+            itemsCount.textContent = `${activeTasks} item${activeTasks !== 1 ? 's' : ''}`;
+        }
+
+        // Filter Tasks
+        filterAll.addEventListener('click', () => {
+            currentFilter = 'all';
+            updateFilterButtons();
+            renderTasks();
+        });
+
+        filterActive.addEventListener('click', () => {
+            currentFilter = 'active';
+            updateFilterButtons();
+            renderTasks();
+        });
+
+        filterCompleted.addEventListener('click', () => {
+            currentFilter = 'completed';
+            updateFilterButtons();
+            renderTasks();
+        });
+
+        function updateFilterButtons() {
+            filterButtons.forEach(btn => btn.classList.remove('text-indigo-600', 'dark:text-indigo-400'));
+            if (currentFilter === 'all') {
+                filterAll.classList.add('text-indigo-600', 'dark:text-indigo-400');
+            } else if (currentFilter === 'active') {
+                filterActive.classList.add('text-indigo-600', 'dark:text-indigo-400');
+            } else if (currentFilter === 'completed') {
+                filterCompleted.classList.add('text-indigo-600', 'dark:text-indigo-400');
+            }
+        }
+
+        // Render Tasks
+        function renderTasks() {
+            // Clear container first
+            tasksContainer.innerHTML = '';
+
+            // Filter tasks based on current filter
+            let filteredTasks = tasks;
+            if (currentFilter === 'active') {
+                filteredTasks = tasks.filter(task => !task.completed);
+            } else if (currentFilter === 'completed') {
+                filteredTasks = tasks.filter(task => task.completed);
+            }
+
+            if (filteredTasks.length === 0) {
+                const emptyState = document.createElement('div');
+                emptyState.className = 'px-4 py-8 text-center text-gray-500 dark:text-gray-400';
+                if (currentFilter === 'all') {
+                    emptyState.textContent = 'No tasks yet. Add one above!';
+                } else if (currentFilter === 'active') {
+                    emptyState.textContent = 'No active tasks';
+                } else if (currentFilter === 'completed') {
+                    emptyState.textContent = 'No completed tasks';
+                }
+                tasksContainer.appendChild(emptyState);
+                return;
+            }
+
+            // Render each task
+            filteredTasks.forEach(task => {
+                const taskEl = document.createElement('div');
+                taskEl.className = 'task-item px-4 py-3 flex items-center group';
+                taskEl.dataset.id = task.id;
+
+                // Checkbox
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'checkbox mr-3';
+                checkbox.checked = task.completed;
+                checkbox.addEventListener('change', () => toggleTask(task.id));
+
+                // Task text
+                const text = document.createElement('span');
+                text.className = 'task-text flex-1 text-gray-800 dark:text-white';
+                if (task.completed) {
+                    text.classList.add('line-through', 'text-gray-400');
+                }
+                text.textContent = task.title;
+
+                // Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'ml-2 p-1 rounded-full text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity';
+                deleteBtn.addEventListener('click', () => deleteTask(task.id));
+                deleteBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                `;
+
+                // Append elements
+                taskEl.appendChild(checkbox);
+                taskEl.appendChild(text);
+                taskEl.appendChild(deleteBtn);
+                tasksContainer.appendChild(taskEl);
+
+                // Trigger animation
+                setTimeout(() => {
+                    taskEl.style.opacity = '1';
+                    taskEl.style.transform = 'translateY(0)';
+                }, 10);
+            });
+        }
+
+        // Save tasks to localStorage and re-render
+        function saveAndRender() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+            updateCounter();
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>

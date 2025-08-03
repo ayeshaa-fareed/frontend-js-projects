@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #ff4757;
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) infinite;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            animation-delay: 0.5s;
+        }
+        
+        p:nth-child(2) {
+            animation-delay: 0.7s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #3a7bd5;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+            animation: pulse 1.5s infinite, glow 2s infinite alternate;
+            box-shadow: 0 0 5px rgba(58,123,213,0.4), 0 0 20px rgba(58,123,213,0.2);
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(58,123,213,0.4); }
+            to { box-shadow: 0 0 20px rgba(58,123,213,0.6); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        a:hover {
+            background: #0056b3;
+        }
+        
+        footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="illustration">
+            <svg viewBox="0 0 200 200" width="150" height="150" class="broken">
+                <!-- This would be replaced with your actual SVG illustration -->
+                <circle cx="100" cy="100" r="80" fill="none" stroke="#ff4757" stroke-width="8" stroke-dasharray="40,10" class="spinner">
+                <path d="M40,100 L160,100 M100,40 L100,160" stroke="#ff4757" stroke-width="8" stroke-linecap="round" class="cross"/>
+            </svg>
+        </div>
+        <h1>404</h1>
+        <p>Oops! The page you are looking for does not exist.</p>
+        <p>It might have been removed, or the URL might be incorrect.</p>
+        <a href="/">Go to Homepage</a>
+        <footer>
+            <p>© 2023 YourWebsite. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
