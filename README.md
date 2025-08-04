@@ -27,7 +27,7 @@ Please contact me if you'd like to collaborate or request access to use any code
 
 **Ayesha Fareed**  
 Front-End Developer | WordPress & Web Design Expert  
-[LinkedIn](https://www.linkedin.com/in/ayeshaa-fareed/)  
-[Portfolio Website](https://your-portfolio-link.com)
+[LinkedIn](https://www.linkedin.com/in/ayesha-fareed/)  
+[fiver](https://www.fiverr.com/sellers/ayeshaa_fareed/)
 
 
